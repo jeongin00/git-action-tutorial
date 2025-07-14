@@ -28,7 +28,8 @@ jobs:
 
       # 🔍 Secret 값 확인용 디버깅 단계
       - name: Check DockerHub Username
-        run: echo "DOCKERHUB_USERNAME is: ${{ secrets.DOCKERHUB_USERNAME }}"
+        run: | 
+         echo "DOCKERHUB_USERNAME is: ${{ secrets.DOCKERHUB_USERNAME }}"
 
       # (2) Docker 이미지 빌드 1) DockerFile 을 기반으로 Docker Image 빌드
       - name: docker image build
