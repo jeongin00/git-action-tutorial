@@ -4,7 +4,7 @@ name: Java CI with Gradle
 on:
   push:
     branches: [ "main" ]
-    
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -22,20 +22,13 @@ jobs:
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
 
- # (1) 프로그램 빌드 (Java 빌드) 3) Java 빌드
+      # (1) 프로그램 빌드 (Java 빌드) 3) Java 빌드
       - name: Spring Boot Build
         run: ./gradlew clean build
-
-      # 🔍 Secret 값 확인용 디버깅 단계
-      - name: Check DockerHub Username
-        run: | 
-         echo "DOCKERHUB_USERNAME is: ${{ secrets.DOCKERHUB_USERNAME }}"
 
       # (2) Docker 이미지 빌드 1) DockerFile 을 기반으로 Docker Image 빌드
       - name: docker image build
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo .
-        env:
-          DOCKER_BUILDKIT: 0
 
       # (2) Docker 이미지 빌드 2) Docker Hub 에 Login
       - name: docker login
@@ -47,7 +40,7 @@ jobs:
       # (2) Docker 이미지 빌드 3) Docker Hub 에 빌드된 이미지 push
       - name: docker Hub push
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-        
+
       # (3) CD : Docker 컨테이너 수행 1) Get GitHub IP
       - name: get GitHub IP
         id: ip
